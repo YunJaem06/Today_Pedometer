@@ -24,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import hs.project.today_pedometer.R
-import hs.project.today_pedometer.domain.model.StatisticsOverview
-import hs.project.today_pedometer.domain.model.StatisticsPeriod
-import hs.project.today_pedometer.domain.model.StatisticsRecord
-import hs.project.today_pedometer.domain.model.StatisticsSummary
+import hs.project.today_pedometer.domain.model.StatsOverview
+import hs.project.today_pedometer.domain.model.StatsPeriod
+import hs.project.today_pedometer.domain.model.StatsRecord
+import hs.project.today_pedometer.domain.model.StatsSummary
 import hs.project.today_pedometer.ui.theme.Today_PedometerTheme
 
 @Composable
@@ -35,16 +35,16 @@ fun StatsRoute(
     viewModel: StatsViewModel = hiltViewModel()
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-    StatsScreen(
+    ReportScreen(
         uiState = uiState,
         onPeriodSelected = viewModel::onPeriodSelected
     )
 }
 
 @Composable
-fun StatsScreen(
+fun ReportScreen(
     uiState: StatsUiState,
-    onPeriodSelected: (StatisticsPeriod) -> Unit,
+    onPeriodSelected: (StatsPeriod) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (uiState.isLoading) {
@@ -85,7 +85,7 @@ fun StatsScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            StatisticsPeriod.entries.forEach { period ->
+            StatsPeriod.entries.forEach { period ->
                 val selected = uiState.selectedPeriod == period
                 if (selected) {
                     Button(
@@ -150,7 +150,7 @@ fun StatsScreen(
                     fontWeight = FontWeight.SemiBold
                 )
                 uiState.overview.records.forEach { record ->
-                    StatisticsRecordRow(record = record)
+                    StatsRecordRow(record = record)
                 }
             }
         }
@@ -185,7 +185,7 @@ private fun SummaryCard(
 }
 
 @Composable
-private fun StatisticsRecordRow(record: StatisticsRecord) {
+private fun StatsRecordRow(record: StatsRecord) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -204,45 +204,45 @@ private fun StatisticsRecordRow(record: StatisticsRecord) {
 }
 
 @Composable
-private fun StatisticsPeriod.label(): String = when (this) {
-    StatisticsPeriod.DAILY -> stringResource(R.string.stats_period_daily)
-    StatisticsPeriod.WEEKLY -> stringResource(R.string.stats_period_weekly)
-    StatisticsPeriod.MONTHLY -> stringResource(R.string.stats_period_monthly)
+private fun StatsPeriod.label(): String = when (this) {
+    StatsPeriod.DAILY -> stringResource(R.string.stats_period_daily)
+    StatsPeriod.WEEKLY -> stringResource(R.string.stats_period_weekly)
+    StatsPeriod.MONTHLY -> stringResource(R.string.stats_period_monthly)
 }
 
 @Composable
-private fun StatisticsPeriod.averageTitle(): String = when (this) {
-    StatisticsPeriod.DAILY -> stringResource(R.string.stats_average_daily)
-    StatisticsPeriod.WEEKLY -> stringResource(R.string.stats_average_weekly)
-    StatisticsPeriod.MONTHLY -> stringResource(R.string.stats_average_monthly)
+private fun StatsPeriod.averageTitle(): String = when (this) {
+    StatsPeriod.DAILY -> stringResource(R.string.stats_average_daily)
+    StatsPeriod.WEEKLY -> stringResource(R.string.stats_average_weekly)
+    StatsPeriod.MONTHLY -> stringResource(R.string.stats_average_monthly)
 }
 
 @Composable
-private fun StatisticsPeriod.recordsTitle(): String = when (this) {
-    StatisticsPeriod.DAILY -> stringResource(R.string.stats_records_daily)
-    StatisticsPeriod.WEEKLY -> stringResource(R.string.stats_records_weekly)
-    StatisticsPeriod.MONTHLY -> stringResource(R.string.stats_records_monthly)
+private fun StatsPeriod.recordsTitle(): String = when (this) {
+    StatsPeriod.DAILY -> stringResource(R.string.stats_records_daily)
+    StatsPeriod.WEEKLY -> stringResource(R.string.stats_records_weekly)
+    StatsPeriod.MONTHLY -> stringResource(R.string.stats_records_monthly)
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun StatsScreenPreview() {
+private fun ReportScreenPreview() {
     Today_PedometerTheme {
-        StatsScreen(
+        ReportScreen(
             uiState = StatsUiState(
-                selectedPeriod = StatisticsPeriod.WEEKLY,
-                overview = StatisticsOverview(
-                    summary = StatisticsSummary(
+                selectedPeriod = StatsPeriod.WEEKLY,
+                overview = StatsOverview(
+                    summary = StatsSummary(
                         averageSteps = 52730,
                         bestSteps = 68120,
                         achievedDays = 15,
                         totalSteps = 210920
                     ),
                     records = listOf(
-                        StatisticsRecord("3/17 - 3/23", 48210),
-                        StatisticsRecord("3/24 - 3/30", 52180),
-                        StatisticsRecord("3/31 - 4/6", 42410),
-                        StatisticsRecord("4/7 - 4/13", 68120)
+                        StatsRecord("3/17 - 3/23", 48210),
+                        StatsRecord("3/24 - 3/30", 52180),
+                        StatsRecord("3/31 - 4/6", 42410),
+                        StatsRecord("4/7 - 4/13", 68120)
                     )
                 ),
                 isLoading = false
