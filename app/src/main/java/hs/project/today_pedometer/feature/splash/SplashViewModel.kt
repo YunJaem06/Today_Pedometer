@@ -1,4 +1,4 @@
-package hs.project.today_pedometer.feature.splash
+﻿package hs.project.today_pedometer.feature.splash
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

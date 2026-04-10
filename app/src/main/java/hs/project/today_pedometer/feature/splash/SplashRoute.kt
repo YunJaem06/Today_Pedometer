@@ -1,4 +1,4 @@
-package hs.project.today_pedometer.feature.splash
+﻿package hs.project.today_pedometer.feature.splash
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,3 +46,4 @@ fun SplashRoute(
         )
     }
 }
+
