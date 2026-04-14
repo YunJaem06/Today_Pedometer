@@ -1,4 +1,4 @@
-package hs.project.today_pedometer.data.local.database
+﻿package hs.project.today_pedometer.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -16,3 +16,4 @@ abstract class TodayPedometerDatabase : RoomDatabase() {
         const val DATABASE_NAME = "today_pedometer.db"
     }
 }
+

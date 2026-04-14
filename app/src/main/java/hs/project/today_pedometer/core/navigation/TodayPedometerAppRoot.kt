@@ -1,5 +1,6 @@
-package hs.project.today_pedometer.core.navigation
+﻿package hs.project.today_pedometer.core.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -9,24 +10,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import hs.project.today_pedometer.feature.home.HomeRoute
 import hs.project.today_pedometer.feature.onboarding.OnboardingRoute
-import hs.project.today_pedometer.feature.progress.ProgressRoute
+import hs.project.today_pedometer.feature.stats.StatsRoute
 import hs.project.today_pedometer.feature.settings.SettingsRoute
 import hs.project.today_pedometer.feature.splash.SplashRoute
-import hs.project.today_pedometer.feature.stats.StatsRoute
 
 @Composable
 fun TodayPedometerAppRoot() {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
+    val currentRoutes = currentDestination?.hierarchy?.mapNotNull { it.route }?.toSet().orEmpty()
+    val homeRoute = TopLevelDestination.Home.route
+    val isHomeDestination = homeRoute in currentRoutes
     val isMainDestination = TopLevelDestination.items.any { destination ->
-        currentDestination?.hierarchy?.any { it.route == destination.route } == true
+        destination.route in currentRoutes
+    }
+
+    BackHandler(enabled = isMainDestination && !isHomeDestination) {
+        navController.navigate(homeRoute) {
+            popUpTo(homeRoute)
+            launchSingleTop = true
+            restoreState = true
+        }
     }
 
     Scaffold(
@@ -34,16 +45,18 @@ fun TodayPedometerAppRoot() {
             if (isMainDestination) {
                 NavigationBar {
                     TopLevelDestination.items.forEach { destination ->
-                        val selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true
+                        val selected = destination.route in currentRoutes
                         NavigationBarItem(
                             selected = selected,
                             onClick = {
-                                navController.navigate(destination.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
+                                if (!selected) {
+                                    navController.navigate(destination.route) {
+                                        popUpTo(homeRoute) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
                                 }
                             },
                             icon = {},
@@ -67,7 +80,7 @@ fun TodayPedometerAppRoot() {
                         }
                     },
                     onNavigateToMain = {
-                        navController.navigate(TopLevelDestination.Progress.route) {
+                        navController.navigate(homeRoute) {
                             popUpTo(AppDestination.Splash.route) { inclusive = true }
                         }
                     }
@@ -76,14 +89,14 @@ fun TodayPedometerAppRoot() {
             composable(AppDestination.Onboarding.route) {
                 OnboardingRoute(
                     onFinished = {
-                        navController.navigate(TopLevelDestination.Progress.route) {
+                        navController.navigate(homeRoute) {
                             popUpTo(AppDestination.Onboarding.route) { inclusive = true }
                         }
                     }
                 )
             }
-            composable(TopLevelDestination.Progress.route) {
-                ProgressRoute()
+            composable(TopLevelDestination.Home.route) {
+                HomeRoute()
             }
             composable(TopLevelDestination.Stats.route) {
                 StatsRoute()
