@@ -39,7 +39,7 @@ fun SettingsRoute(
     val context = LocalContext.current
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
-    SettingsScreen(
+    SettingScreen(
         uiState = uiState,
         activityRecognitionGranted = PermissionUtils.hasActivityRecognitionPermission(context),
         notificationPermissionGranted = PermissionUtils.hasNotificationPermission(context),
@@ -61,7 +61,7 @@ fun SettingsRoute(
 }
 
 @Composable
-fun SettingsScreen(
+fun SettingScreen(
     uiState: SettingsUiState,
     activityRecognitionGranted: Boolean,
     notificationPermissionGranted: Boolean,
@@ -282,9 +282,9 @@ private fun ToggleSettingRow(
 
 @Preview(showBackground = true)
 @Composable
-private fun SettingsScreenPreview() {
+private fun SettingScreenPreview() {
     Today_PedometerTheme {
-        SettingsScreen(
+        SettingScreen(
             uiState = SettingsUiState(
                 dailyGoalInput = "10000",
                 stepLengthInput = "72",
@@ -308,3 +308,6 @@ private fun SettingsScreenPreview() {
         )
     }
 }
+
+
+

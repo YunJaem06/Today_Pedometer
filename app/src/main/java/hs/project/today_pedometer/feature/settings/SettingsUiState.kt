@@ -16,3 +16,6 @@ data class SettingsUiState(
         get() = listOf(dailyGoalInput, stepLengthInput, heightInput, weightInput)
             .all { input -> input.toIntOrNull()?.let { value -> value > 0 } == true } && !isSavingProfile
 }
+
+
+
