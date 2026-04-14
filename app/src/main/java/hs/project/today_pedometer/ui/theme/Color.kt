@@ -1,4 +1,4 @@
-package hs.project.today_pedometer.ui.theme
+﻿package hs.project.today_pedometer.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
