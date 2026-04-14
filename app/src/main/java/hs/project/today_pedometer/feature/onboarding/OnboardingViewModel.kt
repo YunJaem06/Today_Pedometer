@@ -1,4 +1,4 @@
-package hs.project.today_pedometer.feature.onboarding
+﻿package hs.project.today_pedometer.feature.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -40,3 +40,4 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 }
+

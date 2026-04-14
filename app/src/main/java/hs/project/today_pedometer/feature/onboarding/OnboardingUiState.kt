@@ -1,4 +1,4 @@
-package hs.project.today_pedometer.feature.onboarding
+﻿package hs.project.today_pedometer.feature.onboarding
 
 data class OnboardingUiState(
     val activityRecognitionGranted: Boolean = false,
@@ -8,3 +8,4 @@ data class OnboardingUiState(
     val allRequiredGranted: Boolean
         get() = activityRecognitionGranted && notificationGranted
 }
+

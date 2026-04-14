@@ -1,4 +1,4 @@
-package hs.project.today_pedometer.feature.onboarding
+﻿package hs.project.today_pedometer.feature.onboarding
 
 import android.Manifest
 import android.os.Build
@@ -153,3 +153,4 @@ private fun OnboardingScreenPreview() {
         )
     }
 }
+
